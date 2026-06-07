@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.santediagnostics.controllers.TestBuilderController"
+            prefWidth="1200" prefHeight="750"
+            style="-fx-background-color: #f0f4f8;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20"
+              style="-fx-background-color: #1B3A6B; -fx-padding: 16 24;">
+            <Label text="Sante Diagnostics LIMS"
+                   style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Label text="|" style="-fx-text-fill: #4a6fa5;"/>
+            <Label text="Test Builder"
+                   style="-fx-text-fill: #a0b4cc; -fx-font-size: 14px;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="← Back to Dashboard" onAction="#goBack"
+                    style="-fx-background-color: transparent; -fx-text-fill: #a0b4cc;
+                           -fx-border-color: #4a6fa5; -fx-border-radius: 4;
+                           -fx-background-radius: 4; -fx-padding: 6 14; -fx-cursor: hand;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <HBox spacing="24" style="-fx-padding: 24;">
+
+            <!-- Left: Create Test Form -->
+            <VBox spacing="16" minWidth="340"
+                  style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+                         -fx-padding: 24;">
+
+                <Label text="Define New Test Type"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1B3A6B;"/>
+
+                <VBox spacing="6">
+                    <Label text="Test Name" style="-fx-font-size: 13px; -fx-text-fill: #4a5568;"/>
+                    <TextField fx:id="nameField" promptText="e.g. Full Blood Count"
+                               style="-fx-border-color: #cbd5e0; -fx-border-radius: 6;
+                                      -fx-background-radius: 6; -fx-padding: 10 12; -fx-font-size: 13px;"/>
+                </VBox>
+
+                <VBox spacing="6">
+                    <Label text="Category" style="-fx-font-size: 13px; -fx-text-fill: #4a5568;"/>
+                    <ComboBox fx:id="categoryComboBox" maxWidth="Infinity"
+                              style="-fx-border-color: #cbd5e0; -fx-border-radius: 6;
+                                     -fx-background-radius: 6; -fx-padding: 4; -fx-font-size: 13px;"/>
+                </VBox>
+
+                <VBox spacing="6">
+                    <Label text="Price (₦)" style="-fx-font-size: 13px; -fx-text-fill: #4a5568;"/>
+                    <TextField fx:id="priceField" promptText="e.g. 5000"
+                               style="-fx-border-color: #cbd5e0; -fx-border-radius: 6;
+                                      -fx-background-radius: 6; -fx-padding: 10 12; -fx-font-size: 13px;"/>
+                </VBox>
+
+                <VBox spacing="6">
+                    <Label text="Turnaround Time (hours)" style="-fx-font-size: 13px; -fx-text-fill: #4a5568;"/>
+                    <TextField fx:id="tatField" promptText="e.g. 24"
+                               style="-fx-border-color: #cbd5e0; -fx-border-radius: 6;
+                                      -fx-background-radius: 6; -fx-padding: 10 12; -fx-font-size: 13px;"/>
+                </VBox>
+
+                <VBox spacing="6">
+                    <Label text="Result Format" style="-fx-font-size: 13px; -fx-text-fill: #4a5568;"/>
+                    <ComboBox fx:id="formatComboBox" maxWidth="Infinity"
+                              style="-fx-border-color: #cbd5e0; -fx-border-radius: 6;
+                                     -fx-background-radius: 6; -fx-padding: 4; -fx-font-size: 13px;"/>
+                </VBox>
+
+                <Label fx:id="errorLabel" text=""
+                       style="-fx-text-fill: #e53e3e; -fx-font-size: 12px;" wrapText="true"/>
+                <Label fx:id="successLabel" text=""
+                       style="-fx-text-fill: #38a169; -fx-font-size: 12px;" wrapText="true"/>
+
+                <Button text="Create Test Type" onAction="#handleCreate"
+                        maxWidth="Infinity"
+                        style="-fx-background-color: #0F7173; -fx-text-fill: white;
+                               -fx-font-size: 14px; -fx-font-weight: bold;
+                               -fx-background-radius: 6; -fx-padding: 12; -fx-cursor: hand;"/>
+
+                <Button text="Delete Selected" onAction="#handleDelete"
+                        maxWidth="Infinity"
+                        style="-fx-background-color: #e53e3e; -fx-text-fill: white;
+                               -fx-font-size: 13px; -fx-background-radius: 6;
+                               -fx-padding: 10; -fx-cursor: hand;"/>
+            </VBox>
+
+            <!-- Right: Test Types Table -->
+            <VBox spacing="12" HBox.hgrow="ALWAYS"
+                  style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+                         -fx-padding: 24;">
+
+                <Label text="All Test Types"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1B3A6B;"/>
+
+                <TableView fx:id="testTypesTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="nameColumn" text="Test Name" prefWidth="180"/>
+                        <TableColumn fx:id="categoryColumn" text="Category" prefWidth="100"/>
+                        <TableColumn fx:id="priceColumn" text="Price (₦)" prefWidth="100"/>
+                        <TableColumn fx:id="tatColumn" text="TAT (hrs)" prefWidth="90"/>
+                        <TableColumn fx:id="formatColumn" text="Result Format" prefWidth="120"/>
+                    </columns>
+                </TableView>
+
+            </VBox>
+        </HBox>
+    </center>
+
+</BorderPane>

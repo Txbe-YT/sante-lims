@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.santediagnostics.controllers.TestRequestQueueController"
+            prefWidth="1200" prefHeight="750"
+            style="-fx-background-color: #f0f4f8;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20"
+              style="-fx-background-color: #1B3A6B; -fx-padding: 16 24;">
+            <Label text="Sante Diagnostics LIMS"
+                   style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Label text="|" style="-fx-text-fill: #4a6fa5;"/>
+            <Label text="Test Request Queue"
+                   style="-fx-text-fill: #a0b4cc; -fx-font-size: 14px;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="← Back to Dashboard" onAction="#goBack"
+                    style="-fx-background-color: transparent; -fx-text-fill: #a0b4cc;
+                           -fx-border-color: #4a6fa5; -fx-border-radius: 4;
+                           -fx-background-radius: 4; -fx-padding: 6 14; -fx-cursor: hand;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="16" style="-fx-padding: 24;">
+
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Label text="All Test Requests"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1B3A6B;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="filterComboBox" onAction="#handleFilter"
+                          style="-fx-font-size: 13px;"/>
+            </HBox>
+
+            <TableView fx:id="requestsTable" VBox.vgrow="ALWAYS"
+                       style="-fx-background-color: white; -fx-background-radius: 10;">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="#" prefWidth="60"/>
+                    <TableColumn fx:id="customerColumn" text="Customer" prefWidth="160"/>
+                    <TableColumn fx:id="testColumn" text="Test" prefWidth="180"/>
+                    <TableColumn fx:id="priceColumn" text="Price (₦)" prefWidth="100"/>
+                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="130"/>
+                    <TableColumn fx:id="paymentColumn" text="Payment" prefWidth="100"/>
+                    <TableColumn fx:id="orderedColumn" text="Ordered At" prefWidth="160"/>
+                </columns>
+            </TableView>
+
+            <!-- Mark as Paid Section -->
+            <HBox spacing="12" alignment="CENTER_LEFT"
+                  style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+                         -fx-padding: 16 24;">
+                <Label text="Payment Reference:"
+                       style="-fx-font-size: 13px; -fx-text-fill: #4a5568;"/>
+                <TextField fx:id="paymentRefField" promptText="Enter payment reference number"
+                           prefWidth="280"
+                           style="-fx-border-color: #cbd5e0; -fx-border-radius: 6;
+                                  -fx-background-radius: 6; -fx-padding: 8 12; -fx-font-size: 13px;"/>
+                <Button text="Mark Selected as Paid" onAction="#handleMarkPaid"
+                        style="-fx-background-color: #38a169; -fx-text-fill: white;
+                               -fx-font-weight: bold; -fx-background-radius: 6;
+                               -fx-padding: 10 20; -fx-cursor: hand;"/>
+                <Label fx:id="statusLabel" text=""
+                       style="-fx-font-size: 13px;"/>
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>
