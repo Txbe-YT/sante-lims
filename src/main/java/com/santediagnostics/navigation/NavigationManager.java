@@ -32,7 +32,7 @@ public class NavigationManager {
     public void navigateTo(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/" + fxmlFile)
+                    getClass().getResource("/views/" + fxmlFile)
             );
             Parent root = loader.load();
             Scene scene = new Scene(root);

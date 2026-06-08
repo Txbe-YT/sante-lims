@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class DatabaseManager {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/sante_lims";
+    private static final String URL = "jdbc:postgresql://localhost:5433/sante_lims";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "tobeisdaddy";
+    private static final String PASSWORD = "Messi107";
 
     private static DatabaseManager instance;
     private Connection connection;

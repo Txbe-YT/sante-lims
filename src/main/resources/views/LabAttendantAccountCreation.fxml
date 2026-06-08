@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.santediagnostics.controllers.LabAttendantAccountCreationController"
+            prefWidth="1200" prefHeight="750" style="-fx-background-color: #f0f4f8;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #0F7173; -fx-padding: 16 24;">
+            <Label text="Sante Diagnostics LIMS" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Label text="|" style="-fx-text-fill: #0a4f51;"/>
+            <Label text="Register Patient" style="-fx-text-fill: #b2dfdf; -fx-font-size: 14px;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="← Back to Dashboard" onAction="#goBack"
+                    style="-fx-background-color: transparent; -fx-text-fill: #b2dfdf; -fx-border-color: #0a4f51; -fx-border-radius: 4; -fx-padding: 6 14; -fx-cursor: hand;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="16" maxWidth="400" style="-fx-background-color: white; -fx-padding: 32; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+            <Label text="Register New Patient" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0F7173;"/>
+            
+            <TextField fx:id="fullNameField" promptText="Patient Full Name" style="-fx-padding: 10; -fx-border-color: #cbd5e0; -fx-border-radius: 4;"/>
+            <TextField fx:id="emailField" promptText="Patient Email Address" style="-fx-padding: 10; -fx-border-color: #cbd5e0; -fx-border-radius: 4;"/>
+            <PasswordField fx:id="passwordField" promptText="Assign Temporary Password" style="-fx-padding: 10; -fx-border-color: #cbd5e0; -fx-border-radius: 4;"/>
+            
+            <Label fx:id="statusLabel" text="" style="-fx-font-size: 12px;" wrapText="true"/>
+            
+            <Button text="Create Account" onAction="#handleCreatePatient" maxWidth="Infinity"
+                    style="-fx-background-color: #0F7173; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 4; -fx-cursor: hand;"/>
+        </VBox>
+    </center>
+</BorderPane>

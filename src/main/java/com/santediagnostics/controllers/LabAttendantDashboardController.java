@@ -28,4 +28,36 @@ public class LabAttendantDashboardController {
                 "Sante Diagnostics LIMS — Login"
         );
     }
+    
+    @FXML
+    private void goToCreatePatient() {
+        NavigationManager.getInstance().navigateTo(
+                "LabAttendantAccountCreation.fxml", 
+                "Create Patient Account"
+        );
+    }
+
+    @FXML
+    private void goToSampleTracking() {
+        NavigationManager.getInstance().navigateTo(
+                "SampleLifecycle.fxml", 
+                "Sample Lifecycle Tracking"
+        );
+    }
+
+    @FXML
+    private void goToResults() {
+        NavigationManager.getInstance().navigateTo(
+                "ResultValidation.fxml", 
+                "Result Upload & Validation"
+        );
+    }
+
+    @FXML
+    private void goToPaymentQueue() {
+        NavigationManager.getInstance().navigateTo(
+                "LabPaymentQueue.fxml", 
+                "Lab Payment Queue"
+        );
+    }
 }
