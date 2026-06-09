@@ -115,4 +115,38 @@ public class TestTypeDAO {
         }
         return t;
     }
+
+    // Find test types by category
+public List<TestType> findByCategory(String category) {
+    List<TestType> list = new ArrayList<>();
+    String sql = "SELECT * FROM test_types WHERE category = ? ORDER BY name ASC";
+    try {
+        PreparedStatement stmt = getConn().prepareStatement(sql);
+        stmt.setString(1, category);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            list.add(mapRow(rs));
+        }
+    } catch (SQLException e) {
+        System.err.println("TestTypeDAO findByCategory error: " + e.getMessage());
+    }
+    return list;
+}
+
+// Search test types by name
+public List<TestType> searchByName(String keyword) {
+    List<TestType> list = new ArrayList<>();
+    String sql = "SELECT * FROM test_types WHERE name ILIKE ? ORDER BY name ASC";
+    try {
+        PreparedStatement stmt = getConn().prepareStatement(sql);
+        stmt.setString(1, "%" + keyword + "%");
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            list.add(mapRow(rs));
+        }
+    } catch (SQLException e) {
+        System.err.println("TestTypeDAO searchByName error: " + e.getMessage());
+    }
+    return list;
+}
 }

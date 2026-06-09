@@ -16,6 +16,8 @@ import com.santediagnostics.models.Sample;
 import com.santediagnostics.navigation.NavigationManager;
 import com.santediagnostics.session.SessionManager;
 import com.santediagnostics.utils.FileStorageService;
+import com.santediagnostics.utils.EmailService;
+import com.santediagnostics.dao.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -48,6 +50,8 @@ public class ResultValidationController {
     private ResultDAO resultDAO = new ResultDAO();
     private FileStorageService fileService = new FileStorageService();
     private File currentSelectedFile = null;
+    private EmailService emailService = new EmailService();
+    private UserDAO userDAO = new UserDAO();
 
     private ObservableList<Sample> processingSamples = FXCollections.observableArrayList();
     private ObservableList<Result> pendingResults = FXCollections.observableArrayList();

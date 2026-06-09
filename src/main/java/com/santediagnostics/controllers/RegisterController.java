@@ -13,8 +13,10 @@ public class RegisterController {
     @FXML private PasswordField confirmPasswordField;
     @FXML private Label errorLabel;
     @FXML private Label successLabel;
+    @FXML private Button registerButton;
 
     private UserDAO userDAO = new UserDAO();
+    private EmailServcie emailService = new EmailService();
 
     @FXML
     private void handleRegister() {
@@ -51,18 +53,39 @@ public class RegisterController {
             return;
         }
 
+        String verificationToken = TokenGenerator.generate();
+
         // Daudu will add email verification here
-        boolean success = userDAO.registerCustomer(fullName, email, password);
+        boolean success = userDAO.registerCustomerWithToken(fullName, email, password, verificationToken);
 
         if (success) {
-            successLabel.setText("Account created! Please verify your email before logging in. (Daudu will implement email verification)");
+            emailService.sendVerificationEmail(email, fullName, verificationToken);
+            
+            successLabel.setText("Account created! A verification email has been sent to " + email + 
+                                 "\nPlease check your inbox to verify your account.");
+
+            successLabel.setStyle("-fx-text-fill: #38a169;");
             fullNameField.clear();
             emailField.clear();
             passwordField.clear();
             confirmPasswordField.clear();
+
+            registerButton.setDisable(true);
+
+            showEmailVerificationInfo();
         } else {
             errorLabel.setText("Registration failed. Please try again.");
         }
+    }
+
+    private void showEmailVerificationInfo() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Email Verification Required");
+        alert.setHeaderText("Account Created Successfully!");
+        alert.setContentText("A verification link has been sent to your email address.\n\n" +
+                            "Please check your inbox and click the verification link to activate your account.\n\n" +
+                            "After verification, you can log in to the system.");
+        alert.showAndWait();
     }
 
     @FXML

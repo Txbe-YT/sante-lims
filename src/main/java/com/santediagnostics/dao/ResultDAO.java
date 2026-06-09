@@ -14,6 +14,8 @@ import com.santediagnostics.db.DatabaseManager;
 import com.santediagnostics.models.Result;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResultDAO {
     private Connection getConn() {
@@ -108,5 +110,40 @@ public class ResultDAO {
         }
         return list;
     }
+    // Get verified results for a specific customer (for Result Vault)
+public List<Result> getVerifiedResultsByCustomer(int customerId) {
+    List<Result> list = new ArrayList<>();
+    String sql = "SELECT r.*, tt.name AS test_name, u.full_name AS customer_name " +
+                 "FROM results r " +
+                 "JOIN test_requests tr ON r.test_request_id = tr.id " +
+                 "JOIN users u ON tr.customer_id = u.id " +
+                 "JOIN test_types tt ON tr.test_type_id = tt.id " +
+                 "WHERE tr.customer_id = ? AND r.is_verified = TRUE " +
+                 "ORDER BY r.uploaded_at DESC";
+    try {
+        PreparedStatement stmt = getConn().prepareStatement(sql);
+        stmt.setInt(1, customerId);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Result r = new Result();
+            r.setId(rs.getInt("id"));
+            r.setTestRequestId(rs.getInt("test_request_id"));
+            r.setFilePath(rs.getString("file_path"));
+            r.setVerified(rs.getBoolean("is_verified"));
+            r.setUploadedBy(rs.getInt("uploaded_by"));
+            r.setVerifiedBy(rs.getInt("verified_by"));
+            r.setCustomerName(rs.getString("customer_name"));
+            r.setTestName(rs.getString("test_name"));
+            
+            Timestamp uploadedAt = rs.getTimestamp("uploaded_at");
+            if (uploadedAt != null) r.setUploadedAt(uploadedAt.toLocalDateTime());
+            
+            list.add(r);
+        }
+    } catch (SQLException e) {
+        System.err.println("getVerifiedResultsByCustomer error: " + e.getMessage());
+    }
+    return list;
+}
 }
 

@@ -172,4 +172,41 @@ public class TestRequestDAO {
         }
         return tr;
     }
+
+    // Find latest unpaid request for a customer
+public TestRequest findLatestUnpaidByCustomer(int customerId) {
+    String sql = "SELECT tr.*, u.full_name AS customer_name, " +
+                 "tt.name AS test_type_name, tt.price AS test_price, tt.tat_hours " +
+                 "FROM test_requests tr " +
+                 "JOIN users u ON tr.customer_id = u.id " +
+                 "JOIN test_types tt ON tr.test_type_id = tt.id " +
+                 "WHERE tr.customer_id = ? AND tr.payment_status = 'UNPAID' " +
+                 "ORDER BY tr.ordered_at DESC LIMIT 1";
+    try {
+        PreparedStatement stmt = getConn().prepareStatement(sql);
+        stmt.setInt(1, customerId);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return mapRow(rs);
+        }
+    } catch (SQLException e) {
+        System.err.println("findLatestUnpaidByCustomer error: " + e.getMessage());
+    }
+    return null;
+}
+
+// Update payment reference (customer records it)
+public boolean updatePaymentReference(int requestId, String reference) {
+    String sql = "UPDATE test_requests SET payment_reference = ? WHERE id = ?";
+    try {
+        PreparedStatement stmt = getConn().prepareStatement(sql);
+        stmt.setString(1, reference);
+        stmt.setInt(2, requestId);
+        stmt.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        System.err.println("updatePaymentReference error: " + e.getMessage());
+        return false;
+    }
+}
 }

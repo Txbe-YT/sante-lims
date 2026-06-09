@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx/17"
+      style="-fx-background-color: #f0f4f8;">
+    
+    <padding>
+        <Insets top="50" right="50" bottom="50" left="50"/>
+    </padding>
+    
+    <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+        
+        <Label text="Email Verification" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        
+        <Label fx:id="statusLabel" text="Verifying..." style="-fx-font-size: 14px;"/>
+        
+        <Label fx:id="messageLabel" text="Please wait while we verify your email..." 
+               wrapText="true" style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;"/>
+        
+        <Button text="Go to Login" onAction="#goToLogin" 
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;"/>
+        
+    </VBox>
+    
+</VBox>

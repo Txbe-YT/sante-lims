@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx/17"
+      style="-fx-background-color: #f0f4f8;">
+    
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
+    
+    <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 10; -fx-background-radius: 10;">
+        
+        <Label text="Bank Transfer Payment" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        
+        <Separator/>
+        
+        <Label text="Order Details" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <Label fx:id="requestIdLabel" style="-fx-font-size: 14px;"/>
+        <Label fx:id="amountLabel" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #27ae60;"/>
+        
+        <Separator/>
+        
+        <Label text="Select Bank Account" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+        <ComboBox fx:id="bankSelector" promptText="Choose a bank..."/>
+        
+        <Separator/>
+        
+        <Label text="Bank Transfer Details" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <GridPane hgap="10" vgap="10">
+            <Label text="Bank:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+            <Label fx:id="bankNameLabel" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-font-family: monospace;"/>
+            
+            <Label text="Account Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+            <Label fx:id="accountNameLabel" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-font-family: monospace;"/>
+            
+            <Label text="Account Number:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+            <Label fx:id="accountNumberLabel" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-font-family: monospace; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;"/>
+        </GridPane>
+        
+        <Separator/>
+        
+        <Label text="After completing the bank transfer, enter the transaction reference:" 
+               wrapText="true" style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;"/>
+        
+        <TextField fx:id="paymentRefField" promptText="e.g., TRF123456789"/>
+        
+        <HBox spacing="10">
+            <Button text="Confirm Payment" onAction="#handlePaymentConfirmation" 
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;"/>
+            <Button text="Back" onAction="#goBack" 
+                    style="-fx-background-color: #95a5a6; -fx-text-fill: white;"/>
+        </HBox>
+        
+        <Label fx:id="statusLabel"/>
+        
+    </VBox>
+    
+</VBox>

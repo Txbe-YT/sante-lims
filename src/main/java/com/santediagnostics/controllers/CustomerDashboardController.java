@@ -1,10 +1,13 @@
 package com.santediagnostics.controllers;
 
 import com.santediagnostics.audit.AuditService;
+import com.santediagnostics.models.TestRequest;
 import com.santediagnostics.navigation.NavigationManager;
 import com.santediagnostics.session.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.beans.property.SimpleStringProperty;
 
 public class CustomerDashboardController {
 
@@ -27,5 +30,12 @@ public class CustomerDashboardController {
                 NavigationManager.LOGIN,
                 "Sante Diagnostics LIMS — Login"
         );
+    }
+
+    private void setupTimeRemainingColumn(){
+        TableColumn<TestRequest, String> timeRemainingCol = new TableColumn<>("Time Remaining");
+        timeRemainingCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTimeRemainingFormatted()));
+        timeRemainingCol.setPrefWidth(130);
+        timeRemainingCol.setCellFactory(col -> new CountdownTimerCell());
     }
 }

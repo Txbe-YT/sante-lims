@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.time.LocalDateTime;
+import java.sql.Timestamp;
+
 public class UserDAO {
 
     private Connection getConn() {
@@ -170,5 +173,74 @@ public class UserDAO {
             user.setCreatedAt(createdAt.toLocalDateTime());
         }
         return user;
+    }
+
+    public boolean registerCustomerWithToken(String fullName, String email, String plainPassword, String token) {
+        String hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
+        LocalDateTime tokenExpiry = LocalDateTime.now().plusHours(24);
+        
+        String sql = "INSERT INTO users (full_name, email, password_hash, role, " +
+                     "is_verified, force_password_change, verification_token, token_expiry) " +
+                     "VALUES (?, ?, ?, 'CUSTOMER', FALSE, TRUE, ?, ?)";
+        try {
+            PreparedStatement stmt = getConn().prepareStatement(sql);
+            stmt.setString(1, fullName);
+            stmt.setString(2, email);
+            stmt.setString(3, hashedPassword);
+            stmt.setString(4, token);
+            stmt.setTimestamp(5, Timestamp.valueOf(tokenExpiry));
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("registerCustomerWithToken error: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    // Verify email by token
+    public boolean verifyEmailByToken(String token) {
+        String sql = "UPDATE users SET is_verified = TRUE, verification_token = NULL, " +
+                     "token_expiry = NULL, force_password_change = FALSE " +
+                     "WHERE verification_token = ? AND token_expiry > ?";
+        try {
+            PreparedStatement stmt = getConn().prepareStatement(sql);
+            stmt.setString(1, token);
+            stmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            int updated = stmt.executeUpdate();
+            return updated > 0;
+        } catch (SQLException e) {
+            System.err.println("verifyEmailByToken error: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    // Update user profile (name only)
+    public boolean updateProfile(int userId, String newFullName) {
+        String sql = "UPDATE users SET full_name = ? WHERE id = ?";
+        try {
+            PreparedStatement stmt = getConn().prepareStatement(sql);
+            stmt.setString(1, newFullName);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("updateProfile error: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    // Verify current password before change
+    public boolean verifyCurrentPassword(int userId, String plainPassword) {
+        User user = findById(userId);
+        if (user == null) return false;
+        return BCrypt.checkpw(plainPassword, user.getPasswordHash());
+    }
+    
+    // Change password with old password verification
+    public boolean changePassword(int userId, String oldPassword, String newPassword) {
+        if (!verifyCurrentPassword(userId, oldPassword)) {
+            return false;
+        }
+        return updatePassword(userId, newPassword);
     }
 }

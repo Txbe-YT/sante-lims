@@ -14,7 +14,7 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
     @FXML private Button loginButton;
-    @FXML private PasswordField confirmPasswordField 
+    @FXML private PasswordField confirmPasswordField; 
 
     private UserDAO userDAO = new UserDAO();
 
@@ -108,7 +108,7 @@ public class LoginController {
             return;
         }
 
-        if(confirm_your_password != new_password){
+        if(!confirm_your_password.equals(new_password)){
             errorLabel.setText("Passwords don't match! Try again!");
         }
 

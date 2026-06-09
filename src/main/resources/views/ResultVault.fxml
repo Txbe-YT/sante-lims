@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.web.WebView?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/17"
+      style="-fx-background-color: #f0f4f8;">
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="My Results Vault" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Dashboard" onAction="#goToDashboard" 
+                style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+    </HBox>
+    
+    <TabPane fx:id="tabPane">
+        <Tab text="Results List" closable="false">
+            <VBox spacing="10" padding="10">
+                <TableView fx:id="resultsTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="idColumn" text="Request ID" prefWidth="100"/>
+                        <TableColumn fx:id="testColumn" text="Test Name" prefWidth="250"/>
+                        <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
+                    </columns>
+                </TableView>
+                
+                <HBox spacing="10">
+                    <Button text="View Result" onAction="#handleViewResult" 
+                            style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                    <Button text="Download" onAction="#handleDownload" 
+                            style="-fx-background-color: #27ae60; -fx-text-fill: white;"/>
+                </HBox>
+                
+                <Label fx:id="statusLabel"/>
+            </VBox>
+        </Tab>
+        
+        <Tab text="PDF Viewer" closable="false">
+            <WebView fx:id="pdfViewer"/>
+        </Tab>
+    </TabPane>
+    
+</VBox>

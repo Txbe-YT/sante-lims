@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/17"
+      style="-fx-background-color: #f0f4f8;">
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Available Medical Tests" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="My Dashboard" onAction="#goToDashboard" 
+                style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+    </HBox>
+    
+    <Label fx:id="welcomeLabel" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;"/>
+    
+    <!-- Search and Filter -->
+    <HBox spacing="10">
+        <TextField fx:id="searchField" promptText="Search tests..." HBox.hgrow="ALWAYS"/>
+        <ComboBox fx:id="categoryFilter" onAction="#handleFilter" prefWidth="150"/>
+        <Button text="Search" onAction="#handleSearch" 
+                style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+    </HBox>
+    
+    <!-- Test Table -->
+    <TableView fx:id="testTypesTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Test Name" prefWidth="200"/>
+            <TableColumn fx:id="categoryColumn" text="Category" prefWidth="150"/>
+            <TableColumn fx:id="priceColumn" text="Price (₦)" prefWidth="120"/>
+            <TableColumn fx:id="tatColumn" text="TAT (Hours)" prefWidth="100"/>
+        </columns>
+    </TableView>
+    
+    <!-- Order Button -->
+    <HBox spacing="10">
+        <Button text="Order Selected Test" onAction="#handleOrder" 
+                style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;"/>
+        <Label fx:id="statusLabel"/>
+    </HBox>
+    
+</VBox>
