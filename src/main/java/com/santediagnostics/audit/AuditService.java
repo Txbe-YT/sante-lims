@@ -29,6 +29,7 @@ public class AuditService {
         log(action, null, -1, details);
     }
 
+
     public void logWithUser(int userId, String action, String targetTable, int targetId, String details) {
         String sql = "INSERT INTO audit_log (user_id, action, target_table, target_id, details) " +
                 "VALUES (?, ?, ?, ?, ?)";

@@ -17,6 +17,7 @@ public class CustomerDashboardController {
     public void initialize() {
         String name = SessionManager.getInstance().getCurrentUser().getFullName();
         welcomeLabel.setText("Welcome, " + name);
+        setupTimeRemainingColumn();
     }
 
     @FXML

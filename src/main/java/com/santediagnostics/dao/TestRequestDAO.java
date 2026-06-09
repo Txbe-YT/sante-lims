@@ -95,6 +95,21 @@ public class TestRequestDAO {
         }
     }
 
+    // Add this method to TestRequestDAO.java
+    public boolean createRequest(int customerId, int testTypeId) {
+        String sql = "INSERT INTO test_requests (customer_id, test_type_id, " +
+                    "status, payment_status, ordered_at) VALUES (?, ?, 'PENDING', 'UNPAID', CURRENT_TIMESTAMP)";
+        try {
+            PreparedStatement stmt = getConn().prepareStatement(sql);
+            stmt.setInt(1, customerId);
+            stmt.setInt(2, testTypeId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("TestRequestDAO createRequest error: " + e.getMessage());
+            return false;
+        }
+    }
+
     // Mark request as paid
     public boolean markAsPaid(int requestId, String paymentReference, int markedBy) {
         String sql = "UPDATE test_requests SET payment_status = 'PAID', " +
@@ -162,6 +177,7 @@ public class TestRequestDAO {
         tr.setTestTypeName(rs.getString("test_type_name"));
         tr.setTestPrice(rs.getDouble("test_price"));
         tr.setTatHours(rs.getInt("tat_hours"));
+        tr.setMarkedPaidBy(rs.getInt("marked_paid_by"));
         Timestamp orderedAt = rs.getTimestamp("ordered_at");
         if (orderedAt != null) {
             tr.setOrderedAt(orderedAt.toLocalDateTime());

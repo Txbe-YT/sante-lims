@@ -77,6 +77,7 @@ public class SampleDAO {
                 s.setTestRequestId(rs.getInt("test_request_id"));
                 s.setStatus(rs.getString("status"));
                 s.setCustomerName(rs.getString("customer_name"));
+                s.setCustomerId(rs.getInt("customer_id"));
                 s.setTestTypeName(rs.getString("test_name"));
                 s.setUpdatedBy(rs.getInt("updated_by"));
                 

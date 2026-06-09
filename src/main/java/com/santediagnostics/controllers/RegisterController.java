@@ -1,6 +1,8 @@
 package com.santediagnostics.controllers;
 
 import com.santediagnostics.dao.UserDAO;
+import com.santediagnostics.utils.EmailService;
+import com.santediagnostics.utils.TokenGenerator;
 import com.santediagnostics.navigation.NavigationManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -16,7 +18,7 @@ public class RegisterController {
     @FXML private Button registerButton;
 
     private UserDAO userDAO = new UserDAO();
-    private EmailServcie emailService = new EmailService();
+    private EmailService emailService = new EmailService();
 
     @FXML
     private void handleRegister() {

@@ -14,9 +14,17 @@ public class VerificationController {
     private String token;
     
     @FXML
+    // In VerificationController.java, modify:
     public void initialize() {
-        // Token would be passed via navigation manager
-        // For now, we'll simulate - you need to pass token from navigation
+        // Get token from NavigationManager
+        Object tokenObj = NavigationManager.getInstance().getParameter("verification_token");
+        if (tokenObj instanceof String) {
+            this.token = (String) tokenObj;
+            verifyEmail();
+        } else {
+            statusLabel.setText("✗ No verification token provided");
+            statusLabel.setStyle("-fx-text-fill: #e53e3e;");
+        }
     }
     
     public void setToken(String token) {

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.time.LocalDateTime;
-import java.sql.Timestamp;
 
 public class UserDAO {
 
@@ -20,12 +19,12 @@ public class UserDAO {
     // Find user by email (used for login)
     public User findByEmail(String email) {
         String sql = "SELECT * FROM users WHERE email = ?";
-        try {
-            PreparedStatement stmt = getConn().prepareStatement(sql);
+        try(PreparedStatement stmt = getConn().prepareStatement(sql)) {
             stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return mapRow(rs);
+            try(ResultSet rs = stmt.executeQuery()){
+                if (rs.next()) {
+                    return mapRow(rs);
+                }
             }
         } catch (SQLException e) {
             System.err.println("findByEmail error: " + e.getMessage());

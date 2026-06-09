@@ -20,6 +20,9 @@ public class Sample {
     private LocalDateTime processedAt;
     private LocalDateTime validatedAt;
     private int updatedBy;
+    private int customerId;
+    
+
 
     // Extra fields for UI display
     private String testTypeName;
@@ -50,6 +53,9 @@ public class Sample {
 
     public String getTestTypeName() { return testTypeName; }
     public void setTestTypeName(String testTypeName) { this.testTypeName = testTypeName; }
+
+    private int getCustomerId(){return customerId;}
+    public void setCustomerId(int customerId) { this.customerId = customerId; }
 
     public String getCustomerName() { return customerName; }
     public void setCustomerName(String customerName) { this.customerName = customerName; }

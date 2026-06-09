@@ -33,7 +33,7 @@ public class TestRequest {
 
     public LocalDateTime getExpectedCompletion(){
         if(orderedAt == null || tatHours == null) return null;
-        return orderedAt.plusHours(tatHours);
+        return orderedAt.plusHours(tatHours.longValue());
     }
     public long getRemainingSeconds(){
         LocalDateTime expected = getExpectedCompletion();
