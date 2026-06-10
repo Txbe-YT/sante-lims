@@ -21,6 +21,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class SampleLifecycleController {
    @FXML private TableView<Sample> samplesTable;
@@ -38,9 +39,10 @@ public class SampleLifecycleController {
     private SampleDAO sampleDAO = new SampleDAO();
     private ObservableList<Sample> sampleList = FXCollections.observableArrayList();
 
-    // The strictly defined lifecycle states matching your SQL CHECK constraint
-    private final String[] LIFECYCLE_STATES = {
-        "PENDING_COLLECTION", "COLLECTED", "PROCESSING", "AWAITING_VALIDATION", "VALIDATED"
+    // Only allow manual transitions for physical collection and processing.
+    // The final two states MUST be triggered by uploading/verifying a file.
+    private final String[] MANUAL_LIFECYCLE_STATES = {
+        "PENDING_COLLECTION", "COLLECTED", "PROCESSING"
     };
 
     @FXML
@@ -48,7 +50,7 @@ public class SampleLifecycleController {
         try {
             // Setup dropdowns
             filterComboBox.setItems(FXCollections.observableArrayList("All Active", "PENDING_COLLECTION", "COLLECTED", "PROCESSING", "AWAITING_VALIDATION"));
-            statusComboBox.setItems(FXCollections.observableArrayList(LIFECYCLE_STATES));
+            statusComboBox.setItems(FXCollections.observableArrayList(MANUAL_LIFECYCLE_STATES));
 
             // Map columns to Sample model properties
             idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -103,20 +105,36 @@ public class SampleLifecycleController {
             sampleList.clear();
             String selectedFilter = filterComboBox.getValue();
             
-            // Safeguard against nulls during JavaFX view initialization
             if (selectedFilter == null) return; 
             
+            List<Sample> allSamples = sampleDAO.findAll();
+            System.out.println("Fetched " + allSamples.size() + " total samples from DB."); // Debug print
+
             if (selectedFilter.equals("All Active")) {
-                // Hide already validated ones by default to keep the operational queue clean
-                sampleDAO.findAll().stream()
-                        .filter(s -> s.getStatus() != null && !s.getStatus().equals("VALIDATED"))
+                allSamples.stream()
+                        .filter(s -> {
+                            try {
+                                return s.getStatus() != null && !s.getStatus().equals("VALIDATED");
+                            } catch (Exception e) {
+                                return false; // Skip bad data
+                            }
+                        })
                         .forEach(sampleList::add);
             } else {
-                sampleDAO.findAll().stream()
-                        .filter(s -> s.getStatus() != null && s.getStatus().equals(selectedFilter))
+                allSamples.stream()
+                        .filter(s -> {
+                            try {
+                                return s.getStatus() != null && s.getStatus().equals(selectedFilter);
+                            } catch (Exception e) {
+                                return false;
+                            }
+                        })
                         .forEach(sampleList::add);
             }
+            
+            System.out.println("Displaying " + sampleList.size() + " samples in table."); // Debug print
             samplesTable.setItems(sampleList);
+            
         } catch (Exception e) {
             System.err.println("CRASH IN LOADDATA: ");
             e.printStackTrace();

@@ -62,6 +62,14 @@ public class TestRequest {
             return String.format("%d sec", secs);
         }
     }
+    
+    // Add this to format the expected completion date for the UI
+    public String getFormattedExpectedCompletion() {
+        LocalDateTime expected = getExpectedCompletion();
+        if (expected == null) return "N/A";
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
+        return expected.format(formatter);
+    }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

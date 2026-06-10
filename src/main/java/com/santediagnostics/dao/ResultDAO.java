@@ -78,15 +78,19 @@ public class ResultDAO {
     }
     
     // Fetch all results awaiting second-party verification
+    // Fetch all results awaiting second-party verification
     public java.util.List<com.santediagnostics.models.Result> getPendingVerifications() {
         java.util.List<com.santediagnostics.models.Result> list = new java.util.ArrayList<>();
+        
+        // Simpler, more robust SQL query
         String sql = "SELECT r.*, u.full_name AS customer_name, tt.name AS test_name " +
                      "FROM results r " +
-                     "JOIN test_requests tr ON r.test_request_id = tr.id " +
-                     "JOIN users u ON tr.customer_id = u.id " +
-                     "JOIN test_types tt ON tr.test_type_id = tt.id " +
+                     "LEFT JOIN test_requests tr ON r.test_request_id = tr.id " +
+                     "LEFT JOIN users u ON tr.customer_id = u.id " +
+                     "LEFT JOIN test_types tt ON tr.test_type_id = tt.id " +
                      "WHERE r.is_verified = FALSE " +
                      "ORDER BY r.uploaded_at DESC";
+                     
         try {
             PreparedStatement stmt = getConn().prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -97,8 +101,10 @@ public class ResultDAO {
                 r.setFilePath(rs.getString("file_path"));
                 r.setVerified(rs.getBoolean("is_verified"));
                 r.setUploadedBy(rs.getInt("uploaded_by"));
-                r.setCustomerName(rs.getString("customer_name"));
-                r.setTestName(rs.getString("test_name"));
+                
+                // Using LEFT JOIN means these might be null if data is corrupted, so we handle it safely
+                r.setCustomerName(rs.getString("customer_name") != null ? rs.getString("customer_name") : "Unknown Patient");
+                r.setTestName(rs.getString("test_name") != null ? rs.getString("test_name") : "Unknown Test");
                 
                 Timestamp uploaded = rs.getTimestamp("uploaded_at");
                 if (uploaded != null) r.setUploadedAt(uploaded.toLocalDateTime());
@@ -107,6 +113,7 @@ public class ResultDAO {
             }
         } catch (SQLException e) {
             System.err.println("ResultDAO getPending error: " + e.getMessage());
+            e.printStackTrace();
         }
         return list;
     }
@@ -145,5 +152,24 @@ public List<Result> getVerifiedResultsByCustomer(int customerId) {
     }
     return list;
 }
+
+// Fetch a verified result attached to a specific test request
+    public Result getVerifiedResultByTestRequest(int testRequestId) {
+        String sql = "SELECT * FROM results WHERE test_request_id = ? AND is_verified = TRUE";
+        try {
+            PreparedStatement stmt = getConn().prepareStatement(sql);
+            stmt.setInt(1, testRequestId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Result r = new Result();
+                r.setId(rs.getInt("id"));
+                r.setFilePath(rs.getString("file_path"));
+                return r;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching verified result: " + e.getMessage());
+        }
+        return null;
+    }
 }
 

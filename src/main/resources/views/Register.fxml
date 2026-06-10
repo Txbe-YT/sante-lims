@@ -61,7 +61,7 @@
                 <Label fx:id="successLabel" text=""
                        style="-fx-text-fill: #38a169; -fx-font-size: 12px;" wrapText="true"/>
 
-                <Button text="Create Account" onAction="#handleRegister"
+                <Button fx:id="registerButton" text="Create Account" onAction="#handleRegister"
                         maxWidth="Infinity"
                         style="-fx-background-color: #0F7173; -fx-text-fill: white;
                                -fx-font-size: 14px; -fx-font-weight: bold;

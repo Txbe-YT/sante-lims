@@ -75,9 +75,12 @@ public class RegisterController {
             registerButton.setDisable(true);
 
             showEmailVerificationInfo();
+            
+            NavigationManager.getInstance().navigateTo("Verification.fxml", "Verify Account");
         } else {
             errorLabel.setText("Registration failed. Please try again.");
         }
+        
     }
 
     private void showEmailVerificationInfo() {

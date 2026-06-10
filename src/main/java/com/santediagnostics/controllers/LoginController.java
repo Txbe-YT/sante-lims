@@ -14,7 +14,6 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
     @FXML private Button loginButton;
-    @FXML private PasswordField confirmPasswordField; 
 
     private UserDAO userDAO = new UserDAO();
 
@@ -94,30 +93,8 @@ public class LoginController {
 
     @FXML
     private void handleRegister() {
-        String new_email = emailField.getText().trim();
-        String new_password = passwordField.getText().trim();
-        String confirm_your_password = confirmPasswordField.getText().trim();
-
-        if (new_email.isEmpty()) {
-            errorLabel.setText("Please enter your email and password.");
-            return;
-        }
-
-        if (new_password.isEmpty()) {
-            errorLabel.setText("Please enter your email and password.");
-            return;
-        }
-
-        if(!confirm_your_password.equals(new_password)){
-            errorLabel.setText("Passwords don't match! Try again!");
-        }
-
-        if(confirm_your_password.isEmpty()){
-            errorLabel.setText("Please enter your password again in this field!");
-        }
-
-
-        // Daudu's screen — navigate to registration
+        // Just transport the user to Daudu's registration screen.
+        // Validation happens in RegisterController.java!
         NavigationManager.getInstance().navigateTo(
                 "Register.fxml",
                 "Create Account"

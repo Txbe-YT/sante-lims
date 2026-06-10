@@ -6,11 +6,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NavigationManager {
 
     private static NavigationManager instance;
     private Stage primaryStage;
+    
+    // ADDED: A secure map to pass data (like tokens) between screens
+    private Map<String, Object> parameters = new HashMap<>();
 
     private NavigationManager() {}
 
@@ -27,6 +32,15 @@ public class NavigationManager {
 
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    // ADDED: Methods to save and retrieve cross-screen parameters
+    public void setParameter(String key, Object value) {
+        parameters.put(key, value);
+    }
+
+    public Object getParameter(String key) {
+        return parameters.get(key);
     }
 
     public void navigateTo(String fxmlFile) {
@@ -48,7 +62,7 @@ public class NavigationManager {
         primaryStage.setTitle(title);
     }
 
-    // Screen name constants — use these everywhere instead of typing strings
+    // Screen name constants
     public static final String LOGIN = "Login.fxml";
     public static final String FORCE_PASSWORD_CHANGE = "ForcePasswordChange.fxml";
     public static final String SUPER_ADMIN_DASHBOARD = "SuperAdminDashboard.fxml";
